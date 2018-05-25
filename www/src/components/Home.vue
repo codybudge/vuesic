@@ -2,7 +2,10 @@
   <div class="Home">
     <div class="row">
       <div class="col">
-        
+        <!--Serch Bar-->
+        WHAT
+        <input type="text" v-model="query">
+        <button @click="search">Search</button>
       </div>
     </div>
   </div>
@@ -13,7 +16,18 @@ export default {
   name: 'Home',
   data () {
     return {
-      msg: 'This working'
+     query: ''
+    }
+  },
+  computed: {
+    results(){
+      return this.$store.state.results
+    }
+  },
+  methods:{
+    search() {
+        this.$store.dispatch('search', this.query)
+        this.query = ''
     }
   }
 }
