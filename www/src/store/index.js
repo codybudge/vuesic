@@ -5,37 +5,54 @@ import axios from 'axios'
 
 vue.use(vuex)
 
-var api = axios.create_({
+let api = axios.create({
   baseURL: 'https://itunes.apple.com/search?term=',
   timeout: 3000
 })
 
 var myServer = axios.create({
-  baseURL: 'localhost:3000/api/playlist',
+  baseURL: 'localhost:3000/api/PlayList',
   timeout: 3000
 })
 
 
 export default new vuex.Store({
-state: {
-  artist:{},
-  results:[],
-  playList:[]
-},
-mutations: {
-  setResults(state, results){
-    state.results = results
-  }
-},
-actions: {
-  search({commit, dispatch}, payload){
-    api.post('', {query: payload})
-      .then(res=>{
-        commit("setResults", res.data)
-      })
-      .catch(err=>{
-        alert(err.response.data.message)
-      })
+  state: {
+    songs: [],
+    playList: [],
+    activeSong: {}
   },
-},
+  mutations: {
+    setSong(state, song) {
+      state.songs = song
+    },
+    addSong(state, song) {
+      state.playList.push(song)
+    },
+    removeSong(state, idnexToRemove) {
+      state.playList.splice(idnexToRemove, 1)
+    },
+    setActiveSong(state, song) {
+      state.activeSong = song
+    }
+  },
+  actions: {
+    addSong({ dispatch, commit, state }, song) {
+      if (state.playList.includes(song)) {
+        return dispatch('showNotification', {
+          type: 'error', message: 'That song is already in your list'
+        })
+      }
+      commit('addSong', song)
+    },
+    showNotification({ commit }, notification) {
+      console.log(notification)
+    },
+    findSongs({dispatch, commit}, query) {
+      api.get(query)
+      .then(res => {
+        commit('setSong', res.data)
+      }).catch(err => dispatch('showNotification', err))
+    }
+  },
 })
