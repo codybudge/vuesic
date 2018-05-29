@@ -11,8 +11,10 @@ require('./server-assets/db/mlab-config')
 
 //REGISTER MIDDLEWEAR
 app.use(bp.json())
-app.use(bp.urlencoded({extended: true}))
+app.use(bp.urlencoded({ 
+  extended: true}))
 
+var playlist = require('./server-assets/routes/playlists')
 
 //catch all
 app.get('*', (req, res, next)=>{

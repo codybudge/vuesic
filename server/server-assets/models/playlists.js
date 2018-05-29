@@ -1,5 +1,5 @@
-var mongooose = ('mongoose')
-var Schema = mongooose.Schema
+var mongoose = require('mongoose')
+var Schema = mongoose.Schema
 var schemaName = 'playlist'
 
 var songSchema = new Schema({
@@ -7,8 +7,7 @@ var songSchema = new Schema({
     albumArt: {type: String, required: true},
     artist: {type:String, required: true },
     preview: {type:String, required: true },
-    album: {type:String, required: true },
-    price: {type: String, required: true}
+    album: {type:String, required: true }
 })
 
 var playlist = new Schema({
@@ -16,9 +15,10 @@ var playlist = new Schema({
   songs: [songSchema]
 })
 
-playlist.pre('save', (next) => {
+playlist.pre('save', function(next){
   this.markModified('songs')
+  next()
 })
 
 
-module.exports = mongooose.module(schemaName, playlist)
+module.exports = mongoose.model(schemaName, playlist)
