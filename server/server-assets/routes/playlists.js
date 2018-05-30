@@ -15,7 +15,7 @@ router.get('/api/playlists/:id?', (req, res) => {
   }
   Playlist.find({})
     .then(playlist => {
-      return res.send(playlists)
+      return res.send(playlist)
     })
     .catch(err => {
       return res.status(404).send({ 'error': err })

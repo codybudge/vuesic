@@ -9,12 +9,13 @@
           </form>
           <button @click="findSongs">Search</button>
           <div class="results">
-            <h4>Results for {{songs}}:</h4>
+            <h4>Results for: {{query}}</h4>
             <div class="row">
               <ol class="col sm-6">
                 <li v-for="song in songs">
-                  
-                  <p>{{songs}}</p>
+                  <img :src="song.artworkUrl100" alt="">
+                 <p> Song Title:{{song.trackName}}</p>
+                 <p> Artist Name:{{song.artistName}}</p> Collection Name: {{song.collectionName}}
                 </li>
               </ol>
             </div>

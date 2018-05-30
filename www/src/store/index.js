@@ -51,7 +51,8 @@ export default new vuex.Store({
     findSongs({dispatch, commit}, query) {
       api.get(query)
       .then(res => {
-        commit('setSong', res.data)
+        console.log(res.data)
+        commit('setSong', res.data.results)
       }).catch(err => dispatch('showNotification', err))
     }
   },

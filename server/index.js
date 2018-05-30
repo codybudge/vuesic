@@ -16,6 +16,8 @@ app.use(bp.urlencoded({
 
 var playlist = require('./server-assets/routes/playlists')
 
+app.use(playlist.router)
+
 //catch all
 app.get('*', (req, res, next)=>{
   res.status(404).send({error: 'No matching routes'})
