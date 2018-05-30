@@ -6,11 +6,11 @@ import axios from 'axios'
 vue.use(vuex)
 
 let api = axios.create({
-  baseURL: 'https://itunes.apple.com/search?term=',
+  baseURL: 'https://itunes.apple.com/search?media=music&&term=',
   timeout: 3000
 })
 
-var myServer = axios.create({
+let myServer = axios.create({
   baseURL: 'localhost:3000/api/PlayList',
   timeout: 3000
 })
@@ -37,6 +37,23 @@ export default new vuex.Store({
     }
   },
   actions: {
+    findSongs({ dispatch, commit }, query) {
+      api.get(query)
+        .then(res => {
+          let songList = res.data.results.map(song => {
+            return {
+              title: song.trackName,
+              albumArt: song.artworkUrl100,
+              artist: song.artistName,
+              album: song.collectionName,
+              price: song.collectionPrice,
+              preview: song.previewUrl
+            };
+          })
+          commit('setSong', songList)
+        }).catch(err => dispatch('showNotification', err))
+    },
+
     addSong({ dispatch, commit, state }, song) {
       if (state.playList.includes(song)) {
         return dispatch('showNotification', {
@@ -45,15 +62,9 @@ export default new vuex.Store({
       }
       commit('addSong', song)
     },
+
     showNotification({ commit }, notification) {
       console.log(notification)
-    },
-    findSongs({dispatch, commit}, query) {
-      api.get(query)
-      .then(res => {
-        console.log(res.data)
-        commit('setSong', res.data.results)
-      }).catch(err => dispatch('showNotification', err))
     }
-  },
+  }
 })

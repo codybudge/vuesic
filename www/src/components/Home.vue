@@ -13,16 +13,19 @@
             <div class="row">
               <ol class="col sm-6">
                 <li v-for="song in songs">
-                  <img :src="song.artworkUrl100" alt="">
-                 <p> Song Title:{{song.trackName}}</p>
-                 <p> Artist Name:{{song.artistName}}</p> <p> Collection Name: {{song.collectionName}}</p>
+                  <img :src="song.albumArt" alt="">
+                 <p> Song Title:{{song.title}}</p>
+                 <p> Artist Name:{{song.artist}}</p>
+                  <p> Album Name: {{song.album}}</p>
+                  <p>Cost: {{song.price}}</p>
                  <audio class="audioBar" controls="controls">
-                    <source :src="song.previewUrl"> <type="audio/wav">
+                    <source :src="song.preview"> <type="audio/wav">
                     </audio>
+                    <button @click="">Add to playList</button>
                   
                  
                 </li>
-              </ol>
+              </ol> 
             </div>
           </div>
         </div>
