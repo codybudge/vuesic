@@ -21,16 +21,29 @@
                  <audio class="audioBar" controls="controls">
                     <source :src="song.preview"> <type="audio/wav">
                     </audio>
-                    <button @click="">Add to playList</button>
-                  
-                 
+                    <button @click="addToPlaylist">Add to playList</button>
                 </li>
               </ol> 
+              <div class="col">
+                <h3>myTunes</h3>
+                <ol class="col sm-6">
+                    <li v-for="song in playList">
+                      <img :src="song.albumArt" alt="">
+                     <p> Song Title:{{song.title}}</p>
+                     <p> Artist Name:{{song.artist}}</p>
+                      <p> Album Name: {{song.album}}</p>
+                      <p>Cost: {{song.price}}</p>
+                     <audio class="audioBar" controls="controls">
+                        <source :src="song.preview"> <type="audio/wav">
+                        </audio>
+                    </li>
+                  </ol>
+              </div>
             </div>
           </div>
+            </div>
         </div>
       </div>
-    </div>
   </div>
 </template>
 
@@ -56,6 +69,9 @@
     methods: {
       findSongs() {
         this.$store.dispatch('findSongs', this.query)
+      },
+      addToPlaylist() {
+        this.$store.dispatch('addSong', song)
       }
     }
   }

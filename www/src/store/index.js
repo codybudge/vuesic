@@ -20,7 +20,6 @@ export default new vuex.Store({
   state: {
     songs: [],
     playList: [],
-    activeSong: {}
   },
   mutations: {
     setSong(state, song) {
@@ -32,9 +31,7 @@ export default new vuex.Store({
     removeSong(state, idnexToRemove) {
       state.playList.splice(idnexToRemove, 1)
     },
-    setActiveSong(state, song) {
-      state.activeSong = song
-    }
+    
   },
   actions: {
     findSongs({ dispatch, commit }, query) {
