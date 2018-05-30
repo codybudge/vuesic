@@ -15,7 +15,12 @@
                 <li v-for="song in songs">
                   <img :src="song.artworkUrl100" alt="">
                  <p> Song Title:{{song.trackName}}</p>
-                 <p> Artist Name:{{song.artistName}}</p> Collection Name: {{song.collectionName}}
+                 <p> Artist Name:{{song.artistName}}</p> <p> Collection Name: {{song.collectionName}}</p>
+                 <audio class="audioBar" controls="controls">
+                    <source :src="song.previewUrl"> <type="audio/wav">
+                    </audio>
+                  
+                 
                 </li>
               </ol>
             </div>
