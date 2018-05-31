@@ -5,7 +5,7 @@ var Playlist = require('../models/playlists')
 //Get & Get by ID
 router.get('/api/playlists/:id?', (req, res) => {
   if (req.params.id) {
-    Playlist.findById(req.params.id)
+    return Playlist.findById(req.params.id)
       .then(playlist => {
         return res.send(playlist)
       })
@@ -19,20 +19,6 @@ router.get('/api/playlists/:id?', (req, res) => {
     })
     .catch(err => {
       return res.status(404).send({ 'error': err })
-    })
-})
-
-
-
-
-//Post CREAT NEW PLAYLIST 
-router.post('/api/playlists', (req, res) => {
-  Playlist.create(req.body)
-    .then(newPlaylist => {
-      return res.send(newPlaylist)
-    })
-    .catch(err => {
-      return res.status(400).send(err)
     })
 })
 
@@ -53,26 +39,32 @@ router.put('/api/playlists/:id/songs', (req, res)=>{
 })
 
 //Update entire song array from entire playlist
-router.put('/api/playlists/:id', (req,res)=>{
-  Playlist,findByIdAndUpdate(req.params.id, req.body,{new:true})
+router.put('/api/playlists/:id', (req, res)=>{
+  Playlist.findByIdAndUpdate(req.params.id, req.body,{new:true})
   .then(playlist=>{
-    res,send(playlist)
+    res.send(playlist)
   })
   .catch(err => {
     return res.status(400).send(err)
   })
 })
 
-
 //Delete
-router.delete('/api/playlists/:id', (req, res) =>{
-  Playlist.findbyIdAndRemove(req.params.id)
-  .then(oldPlaylist => {
-    res.send("Successfully deleted")
+router.delete('/api/playlists/:id/songs/:songId', (req, res) =>{
+  Playlist.findById(req.params.id)
+  .then(function (playlist){
+    let song = playlist.songs.id(req.params.songId)
+    if(song){
+      song.remove()
+    }
+    playlist.save().then(err => {
+      res.send(playlist)
+    })
   })
   .catch(err => {
-    res.send(err)
+    return res.status(400).send(err)
   })
+  
 })
 
 module.exports = {

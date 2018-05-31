@@ -10,8 +10,8 @@ let api = axios.create({
   timeout: 3000
 })
 
-let myServer = axios.create({
-  baseURL: 'localhost:3000/api/PlayList',
+let myTunes = axios.create({
+  baseURL: 'http://localhost:3000/api/',
   timeout: 3000
 })
 
@@ -19,18 +19,21 @@ let myServer = axios.create({
 export default new vuex.Store({
   state: {
     songs: [],
-    playList: [],
+    playList: {},
   },
   mutations: {
     setSong(state, song) {
       state.songs = song
     },
+    setPlayList(state, playlist) {
+      state.playList = playlist
+    },
     addSong(state, song) {
       state.playList.push(song)
     },
-    removeSong(state, idnexToRemove) {
-      state.playList.splice(idnexToRemove, 1)
-    },
+    // removeSong(state, idnexToRemove) {
+    //   state.playList.splice(idnexToRemove, 1)
+    // },
     
   },
   actions: {
@@ -50,14 +53,35 @@ export default new vuex.Store({
           commit('setSong', songList)
         }).catch(err => dispatch('showNotification', err))
     },
-
-    addSong({ dispatch, commit, state }, song) {
-      if (state.playList.includes(song)) {
-        return dispatch('showNotification', {
-          type: 'error', message: 'That song is already in your list'
-        })
-      }
-      commit('addSong', song)
+    getPlaylist({commit, dispatch}, playlist){
+      myTunes.get('playlists/5b0ddaa33ce72e0fb8a0c051', playlist)
+      .then(res => {
+        commit('setPlayList', res.data)
+      })
+    },
+    addToPlayList({dispatch, commit}, song){
+      myTunes.put('playlists/5b0ddaa33ce72e0fb8a0c051/songs', song)
+      .then(res => {
+        commit('setPlayList', res.data)
+      })
+    },
+    removeSong({dispatch, commit}, songId) {
+      myTunes.delete('playlists/5b0ddaa33ce72e0fb8a0c051/songs/' + songId)
+      .then(res => {
+        commit('setPlayList', res.data)
+      })
+    },
+    moveUp({dispatch, commit}, songs) {
+      myTunes.put('playlists/5b0ddaa33ce72e0fb8a0c051', songs)
+      .then(res => {
+        commit('setPlayList', res.data)
+      })
+    },
+    moveDown({dispatch, commit}, songs){
+      myTunes.put('playlists/5b0ddaa33ce72e0fb8a0c051', songs)
+      .then(res =>{
+        commit('setPlayList', res.data)
+      })
     },
 
     showNotification({ commit }, notification) {
