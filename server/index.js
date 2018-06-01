@@ -1,10 +1,11 @@
 var express = require('express')
 var bp = require('body-parser')
 var app = express()
+let server = require('hhtp').createServer(app)
 var cors = require('cors')
 var port = process.env.PORT || 3000
 
-app.use(express.static(__dirname + "../www/dist"))
+app.use(express.static(__dirname + "/../www/dist"))
 
 var whitelist= ['http://localhost:8080', 'https://hotlinemusic.herokuapp.com/']
 var corsOptions = {
