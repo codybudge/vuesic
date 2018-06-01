@@ -3,6 +3,9 @@ import vuex from 'vuex'
 import axios from 'axios'
 
 
+var production = !window.location.host.includes('localhost');
+var baseUrl = production ? '//kanban.herokuapp.com/' : '//localhost:3000/';
+
 vue.use(vuex)
 
 let api = axios.create({
@@ -11,7 +14,7 @@ let api = axios.create({
 })
 
 let myTunes = axios.create({
-  baseURL: 'http://localhost:3000/api/',
+  baseURL: baseUrl,
   timeout: 3000
 })
 
