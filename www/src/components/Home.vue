@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="Home">
       <div class="row">
-        <div class="col">
+        <div class="col d-flex justify-content-center">
           <!--Serch Bar-->
           <form @submit.prevent="findSongs">
             <input type="text" v-model="query">
@@ -10,49 +10,76 @@
           <button @click="findSongs">Search</button>
           <div class="results">
             <h4>Results for: {{query}}</h4>
-            <div class="row">
-              <ol class="col sm-6">
-                <li v-for="song in songs">
-                  <img :src="song.albumArt" alt="">
-                 <p> Song Title:{{song.title}}</p>
-                 <p> Artist Name:{{song.artist}}</p>
-                  <p> Album Name: {{song.album}}</p>
-                  <p>Cost: ${{song.price}}</p>
-                 <audio class="audioBar" controls="controls">
-                    <source :src="song.preview"> <type="audio/wav">
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col d-flex justify-content-center">
+          <div class="card" style="width: 27rem;">
+              <h3>Songs</h3>
+          <div class="card-body">
+            <div class="card" style="width: 24rem;">
+              <div class="card-body">
+                <ol>
+                  <li v-for="song in songs">
+                    <img :src="song.albumArt" alt="">
+                    <p> Song Title:{{song.title}}</p>
+                    <p> Artist Name:{{song.artist}}</p>
+                    <p> Album Name: {{song.album}}</p>
+                    <p>Cost: ${{song.price}}</p>
+                    <audio class="audioBar" controls="controls">
+                      <source :src="song.preview">
+                      <type="audio/wav">
                     </audio>
                     <button @click="addToPlaylist(song)">Add to playList</button>
-                </li>
-              </ol> 
-              <div class="col">
-                <h3>myTunes</h3>
-                <ol class="col sm-6">
-                    <li v-for="(song, index) in playlist.songs">
-                      <img :src="song.albumArt" alt="">
-                      <p> Song Title:{{song.title}}</p>
-                      <button @click="moveUp(index)">move up</button>
-                      <button @click ="moveDown(index)">move down</button>
-                     <p> Artist Name:{{song.artist}}</p>
-                      <p> Album Name: {{song.album}}</p>
-                      <audio class="audioBar" controls="controls">
-                        <source :src="song.preview"> <type="audio/wav">
-                        </audio>
-                        <button @click="removeSong(song._id)">Remove</button>
-                    </li>
-                  </ol>
+                  </li>
+                </ol>
               </div>
             </div>
           </div>
+          </div>
+          </div>
+
+
+          <div class="col d-flex justify-content-center">
+            <!--Your Play list side-->
+            <div class="card" style="width: 27rem;">
+                <h3>My Playlist</h3>
+              <div class="card-body">
+
+                <div class="card" style="width: 24rem;">
+                  <div class="card-body">
+                    <ol class="list">
+                      <li v-for="(song, index) in playlist.songs">
+                        <img :src="song.albumArt" alt="">
+                        <p> Song Title:{{song.title}}</p>
+                        <button @click="moveUp(index)">move up</button>
+                        <button @click="moveDown(index)">move down</button>
+                        <p> Artist Name:{{song.artist}}</p>
+                        <p> Album Name: {{song.album}}</p>
+                        <audio class="audioBar" controls="controls">
+                          <source :src="song.preview">
+                          <type="audio/wav">
+                        </audio>
+                        <button @click="removeSong(song._id)">Remove</button>
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
             </div>
-        </div>
+          </div>
       </div>
+    </div>
   </div>
+
 </template>
 
 <script>
   export default {
     name: 'Home',
-    mounted(){
+    mounted() {
       this.$store.dispatch('getPlaylist')
     },
     data() {
@@ -70,7 +97,7 @@
       activeSong() {
         return this.$store.state.activeSong
       }
-      
+
     },
     methods: {
       findSongs() {
@@ -85,13 +112,13 @@
       moveUp(index) {
         var store = this.playlist.songs[index]
         this.playlist.songs.splice(index, 1)
-        this.playlist.songs.splice(index -1, 0, store)
+        this.playlist.songs.splice(index - 1, 0, store)
         this.$store.dispatch('moveUp', this.playlist)
       },
       moveDown(index) {
         var store = this.playlist.songs[index]
         this.playlist.songs.splice(index, 1)
-        this.playlist.songs.splice(index +1, 0, store)
+        this.playlist.songs.splice(index + 1, 0, store)
         this.$store.dispatch('moveDown', this.playlist)
       }
     }
@@ -100,4 +127,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  h3{
+    text-align: center
+  }
 </style>
