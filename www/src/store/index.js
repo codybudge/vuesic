@@ -4,7 +4,8 @@ import axios from 'axios'
 
 
 var production = !window.location.host.includes('localhost');
-var baseUrl = production ? '//hotlinemusic.herokuapp.com/' : '//localhost:3000/';
+var baseUrl = production ? '//hotlinemusic.herokuapp.com/' : '//localhost:3000/api/';
+
 
 vue.use(vuex)
 
