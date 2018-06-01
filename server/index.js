@@ -4,6 +4,18 @@ var app = express()
 var cors = require('cors')
 var port = 3000
 
+app.use(express.static(__dirname + "../www/dist"))
+
+var whitelist= ['http://localhost:8080', 'https://hotlinemusic.herokuapp.com/']
+var corsOptions = {
+	origin: function (origin, callback) {
+		var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+		callback(null, originIsWhitelisted);
+	},
+	credentials: true
+};
+app.use(cors(corsOptions))
+
 app.use(cors())
 //Fire up database connection
 require('./server-assets/db/mlab-config')
